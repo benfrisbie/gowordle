@@ -14,7 +14,7 @@ COPY main.go ./
 COPY pkg ./pkg
 
 # build binary
-RUN go build -o /gowordle
+RUN CGO_ENABLED=0 go build -o /gowordle
 
 ###
 # Stage 2: Copy binary into small image 
