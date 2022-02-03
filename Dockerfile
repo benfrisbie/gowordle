@@ -19,7 +19,7 @@ RUN go build -o /gowordle
 ###
 # Stage 2: Copy binary into small image 
 ###
-FROM golang:1.17-alpine
+FROM scratch
 COPY --from=build /gowordle /gowordle
 # Copy word list into image
 COPY words.txt ./
