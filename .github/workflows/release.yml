@@ -16,7 +16,7 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            ghcr.io/bfrisbie/gowordle
+            ghcr.io/benfrisbie/gowordle
           tags: |
             type=semver,pattern={{version}}
             type=sha
