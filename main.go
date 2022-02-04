@@ -51,7 +51,7 @@ func main() {
 	// load words and game
 	words := wordle.NewWords(*wordPath, *solutionsPath)
 	game = wordle.NewWordle(words.RandomSolution(*seed), *maxGuesses)
-	fmt.Printf("Random word selected. Ready, Set, Go!\n")
+	fmt.Printf("Random word selected. You have %d guesses. Ready, Set, Go!\n", *maxGuesses)
 
 	// start game loop
 	var reader = bufio.NewReader(os.Stdin)
