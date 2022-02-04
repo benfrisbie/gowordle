@@ -23,4 +23,5 @@ FROM scratch
 COPY --from=build /gowordle /gowordle
 # Copy word list into image
 COPY words.txt ./
+COPY solutions.txt ./
 ENTRYPOINT ["/gowordle"]
