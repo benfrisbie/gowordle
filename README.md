@@ -5,42 +5,55 @@
 
 `gowordle` is a [Wordle](https://www.powerlanguage.co.uk/wordle/) clone written in Go.
 
+How to run:
+```
+docker run --rm -it ghcr.io/benfrisbie/gowordle
+```
+
 # Table of Contents
 - [How to Play](#how-to-play)
+    - [Hints](#hints)
     - [Example](#example)
 - [Usage](#usage)
-    - [Basic Usage](#basic-usage)
     - [Options](#options)
 
 # How to Play
-To win the game you must successfully guess a word within a given number of tries. After guessing a word, hints are given based on the letters positions in your guess compared to the actual solution.
+Wordle is a game where you guess words in hopes of determining the final solution. After guessing a word, hints are given based on the letters positions in your guess compared to the actual solution. These hints should be used to determine yor next guess.
 
-The hints are:
-- <span style="color:green">green</span> - letter is in correct position
-- <span style="color:yellow">yellow</span> - letter is in the solution, but not in correct position
-- <span style="color:red">red</span> - letter is not in word
+## Hints
+The hints are color coded:
+| color | description |
+| --- | --- |
+| 🟢 | letter is in solution and in correct position |
+| 🟡 | letter is in solution, but in wrong position |
+| 🔴 | letter is not in solution |
 
 ## Example
-Let's assume the correct solution is "cares". A guess of "rates" would look like this:
+![example.png](media/example.png?raw=true)
+As you can see the final solution is `along`. Let's walk through the example one guess at a time:
+- guess #1 = `rates`
+    - 🟡 - `a` is in solution, but in wrong position
+    - 🔴 - `r`,`t`,`e`, and `s` are not in solution
+- guess #2 = `ample`
+    - 🟢 - `a` is in correct position
+    - 🟡 - `l` is in solution, but in wrong position
+    - 🔴 - `m`,`p`, and `e` are not in solution
+- guess #3 = `aloud`
+    - 🟢 - `a`, `l`, `o` are in correct positions
+    - 🔴 - `u` and `d` are not in solution
+- guess #4 = `alone`
+    - 🟢 - `a`, `l`, `o`, `n` are in correct positions
+    - 🔴 - `e` is not in solution
+- guess #5 = `along`
+    - 🟢 - `a`, `l`, `o`, `n`, `g` are in correct positions
 
-Guess: rates  
-<span style="color:yellow">r</span><span style="color:green">a</span><span style="color:red">t</span><span style="color:green">e</span><span style="color:green">s</span> - a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z
-
-This means:
-- 'r' is in the solution, but in the wrong position (caRes)
-- 'a' is in the correct position (cAres)
-- 't' is not in the solution
-- 'e' is in the correct position (carEs)
-- 's' is in the correct position (careS)
 
 # Usage
-## Basic Usage
-The easiest way to run `gowordle` is with docker.
-`docker run --rm -it ghcr.io/benfrisbie/gowordle`
+`docker run --rm -it ghcr.io/benfrisbie/gowordle [OPTIONS]`
 
 ## Options
-| Name | Description | Default |
-| --- | --- | --- |
-| `-max_guesses` | max number of guesses the user is allowed to make | 6 |
-| `-seed` | seed to use for randomly selecting solution | current unix epoch time in nanoseconds (ex: 1643952789299435700) |
-| `-debug` | enable debug logging |  |
+| Name | Description |
+| ---- | --- |
+| `--max_guesses` | max number of guesses |
+| `--seed` | random seed to use |
+| `--debug` | enable debug logging |
