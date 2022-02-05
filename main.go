@@ -4,10 +4,9 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"math/rand"
 	"os"
-	"os/signal"
 	"strings"
-	"syscall"
 	"time"
 
 	"github.com/benfrisbie/gowordle/pkg/wordle"
@@ -34,52 +33,60 @@ func main() {
 	}
 
 	log.Debug().Int64("seed", *seed).Msg("initializing game")
+	random := rand.New(rand.NewSource(*seed))
 	var game *wordle.Wordle
 
-	// setup signal handler
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
-	go func() {
-		sig := <-sigs
-		fmt.Println(sig)
-		if game != nil {
-			fmt.Printf("The correct word was %s\n", game.Word)
-		}
-		os.Exit(0)
-	}()
-
-	// load words and game
+	// load words
 	words := wordle.NewWords(*wordPath, *solutionsPath)
-	game = wordle.NewWordle(words.RandomSolution(*seed), *maxGuesses)
-	fmt.Printf("Random word selected. You have %d guesses. Ready, Set, Go!\n", *maxGuesses)
-
-	// start game loop
 	var reader = bufio.NewReader(os.Stdin)
-	for {
-		// prompt user for guess
-		fmt.Printf("Guess: ")
-		guess, _ := reader.ReadString('\n')
-		guess = strings.ToLower(strings.TrimSuffix(guess, "\n"))
 
-		// validate guess
-		if len(guess) != len(game.Word) {
-			fmt.Printf("incorrect length\n")
-			continue
-		} else if !words.Exists(guess) {
-			fmt.Printf("not a real word\n")
-			continue
+	for {
+		game = wordle.NewWordle(words.RandomSolution(random), *maxGuesses)
+		fmt.Printf("Random word selected. You have %d guesses. Ready, Set, Go!\n", *maxGuesses)
+
+		// start game loop
+		for {
+			// prompt user for guess
+			fmt.Printf("Guess: ")
+			guess, err := reader.ReadString('\n')
+			if err != nil {
+				log.Fatal().Err(err).Msg("error reading input")
+			}
+			guess = strings.ToLower(strings.TrimSuffix(guess, "\n"))
+
+			// validate guess
+			if len(guess) != len(game.Word) {
+				fmt.Printf("incorrect length\n")
+				continue
+			} else if !words.Exists(guess) {
+				fmt.Printf("not a real word\n")
+				continue
+			}
+
+			// send guess to game and print hints
+			hint := game.Guess(guess)
+			fmt.Println(hint + " - " + game.GetAlphabetHints())
+
+			// Check for end of game
+			if game.IsWin() {
+				fmt.Printf("You won! You used %d out of %d guesses!\n", game.Guesses, game.MaxGuesses)
+				break
+			} else if game.IsLose() {
+				fmt.Printf("You lost! The word was %v\n", game.Word)
+				break
+			}
 		}
 
-		// send guess to game and print hints
-		hint := game.Guess(guess)
-		fmt.Println(hint + " - " + game.GetAlphabetHints())
-
-		// Check for end of game
-		if game.IsWin() {
-			fmt.Printf("You won! You used %d out of %d guesses!\n", game.Guesses, game.MaxGuesses)
-			break
-		} else if game.IsLose() {
-			fmt.Printf("You lost! The word was %v\n", game.Word)
+		fmt.Printf("Would you like to play again? (y/N)\n")
+		response, err := reader.ReadString('\n')
+		if err != nil {
+			log.Fatal().Err(err).Msg("error reading input")
+		}
+		response = strings.ToLower(strings.TrimSpace(response))
+		if response == "y" || response == "yes" {
+			fmt.Println()
+			continue
+		} else {
 			break
 		}
 	}

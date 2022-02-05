@@ -59,9 +59,8 @@ func ingestWordsFromFile(path string) ([]string, error) {
 }
 
 // RandomSolution chooses a random word from the solution list
-func (w *Words) RandomSolution(seed int64) string {
-	i := rand.New(rand.NewSource(seed)).Intn(len(w.solutions))
-	return w.solutions[i]
+func (w *Words) RandomSolution(random *rand.Rand) string {
+	return w.solutions[random.Intn(len(w.solutions))]
 }
 
 // Exists checks if a word exists in the list of words
