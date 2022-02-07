@@ -2,8 +2,10 @@ name: Build
 
 on:
   push:
+    branches:
+      - $default-branch
     tags:
-      - '*'
+      - '*.*.*'
 
 jobs:
   publish_docker:
@@ -16,9 +18,10 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            ghcr.io/benfrisbie/gowordle
+            ghcr.io/${{ github.repository }}
           tags: |
             type=semver,pattern={{version}}
+            type=edge,branch=$repo.default_branch
             type=sha
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1 
