@@ -1,5 +1,5 @@
 # gowordle
-[![Build Status](https://github.com/benfrisbie/gowordle/actions/workflows/release.yml/badge.svg)](https://github.com/benfrisbie/gowordle/actions/workflows/release.yml)
+[![Build Status](https://github.com/benfrisbie/gowordle/actions/workflows/docker_publish.yml/badge.svg)](https://github.com/benfrisbie/gowordle/actions/workflows/release.yml)
 [![Contributors](https://img.shields.io/github/contributors/benfrisbie/gowordle)](https://github.com/benfrisbie/gowordle/graphs/contributors)
 [![Activity](https://img.shields.io/github/commit-activity/m/benfrisbie/gowordle)](https://github.com/benfrisbie/gowordle/pulse)
 
