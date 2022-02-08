@@ -42,12 +42,11 @@ func main() {
 
 	for {
 		game = wordle.NewWordle(words.RandomSolution(random), *maxGuesses)
-		fmt.Printf("Random word selected. You have %d guesses. Ready, Set, Go!\n", *maxGuesses)
 
 		// start game loop
 		for {
 			// prompt user for guess
-			fmt.Printf("Guess: ")
+			fmt.Printf("Guess #%d/%d: ", game.Guesses+1, *maxGuesses)
 			guess, err := reader.ReadString('\n')
 			if err != nil {
 				log.Fatal().Err(err).Msg("error reading input")
@@ -56,10 +55,10 @@ func main() {
 
 			// validate guess
 			if len(guess) != len(game.Word) {
-				fmt.Printf("incorrect length\n")
+				fmt.Printf("Incorrect length. Enter a %d letter word\n", len(game.Word))
 				continue
 			} else if !words.Exists(guess) {
-				fmt.Printf("not a real word\n")
+				fmt.Printf("Not a real word\n")
 				continue
 			}
 
@@ -69,10 +68,10 @@ func main() {
 
 			// Check for end of game
 			if game.IsWin() {
-				fmt.Printf("You won! You used %d out of %d guesses!\n", game.Guesses, game.MaxGuesses)
+				fmt.Printf("You won! Correctly guessed \"%s\" in %d/%d guesses!\n", game.Word, game.Guesses, game.MaxGuesses)
 				break
 			} else if game.IsLose() {
-				fmt.Printf("You lost! The word was %v\n", game.Word)
+				fmt.Printf("You lost! The solution was \"%s\"\n", game.Word)
 				break
 			}
 		}
