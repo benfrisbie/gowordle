@@ -3,7 +3,7 @@
 [![Contributors](https://img.shields.io/github/contributors/benfrisbie/gowordle)](https://github.com/benfrisbie/gowordle/graphs/contributors)
 [![Activity](https://img.shields.io/github/commit-activity/m/benfrisbie/gowordle)](https://github.com/benfrisbie/gowordle/pulse)
 
-`gowordle` is a [Wordle](https://www.powerlanguage.co.uk/wordle/) clone written in Go.
+`gowordle` is a [Wordle](https://www.powerlanguage.co.uk/wordle/) clone written in Go for the terminal.
 
 How to run:
 ```
