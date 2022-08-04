@@ -16,5 +16,3 @@ jobs:
       - uses: benfrisbie/docker-tag-build-push-action/@main
         with:
           push: ${{ github.event_name == 'push' }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
