@@ -14,3 +14,5 @@ jobs:
     name: docker build
     steps:
       - uses: benfrisbie/docker-tag-build-push-action/@main
+        with:
+          push: ${{ github.event_name == 'push' }}
