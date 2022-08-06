@@ -17,7 +17,6 @@ type Wordle struct {
 func NewWordle(solution string, maxGuesses int, backgroundColor bool) *Wordle {
 	w := Wordle{}
 	w.Solution = solution
-	w.Solution = "exits"
 	w.Guesses = 0
 	w.MaxGuesses = maxGuesses
 
