@@ -10,11 +10,11 @@ type Wordle struct {
 	Guesses    int
 	MaxGuesses int
 	Win        bool
-	RuneHints  map[rune]Hint
+	Hints      Hints
 }
 
 // NewWordle properly initializes a new Wordle game
-func NewWordle(solution string, maxGuesses int) *Wordle {
+func NewWordle(solution string, maxGuesses int, backgroundColor bool) *Wordle {
 	w := Wordle{}
 	w.Solution = solution
 	w.Solution = "exits"
@@ -22,7 +22,7 @@ func NewWordle(solution string, maxGuesses int) *Wordle {
 	w.MaxGuesses = maxGuesses
 
 	// initialize rune hints
-	w.RuneHints = NewHintMap()
+	w.Hints = NewHints(backgroundColor)
 
 	return &w
 }
@@ -34,14 +34,14 @@ func (w *Wordle) Guess(guess string) string {
 	for i, guessRune := range guess {
 		solutionRune := rune(w.Solution[i])
 		if guessRune == solutionRune {
-			w.UpdateHintMap(guessRune, HintCorrect)
-			hint += HintCorrect.String(guessRune)
+			w.Hints.UpdateAlphabetHintMap(guessRune, HintCorrect)
+			hint += w.Hints.String(guessRune, HintCorrect)
 		} else if count := strings.Count(w.Solution, string(guessRune)); count > 0 && count != w.getCorrectCountForLetter(guess, guessRune) {
-			w.UpdateHintMap(guessRune, HintIncorrectPosition)
-			hint += HintIncorrectPosition.String(guessRune)
+			w.Hints.UpdateAlphabetHintMap(guessRune, HintIncorrectPosition)
+			hint += w.Hints.String(guessRune, HintIncorrectPosition)
 		} else {
-			w.UpdateHintMap(guessRune, HintIncorrect)
-			hint += HintIncorrect.String(guessRune)
+			w.Hints.UpdateAlphabetHintMap(guessRune, HintIncorrect)
+			hint += w.Hints.String(guessRune, HintIncorrect)
 		}
 	}
 	if guess == w.Solution {
@@ -65,9 +65,9 @@ func (w *Wordle) getCorrectCountForLetter(guess string, r rune) int {
 func (w *Wordle) GetAlphabetHints() string {
 	hint := ""
 	for _, r := range GetAlphabet() {
-		hint += w.RuneHints[r].String(r) + ","
+		hint += w.Hints.String(r, w.Hints.AlphabetHintMap[r]) + ","
 	}
-	return hint
+	return hint[:len(hint)-1]
 }
 
 // IsWin returns true if the game has been won
