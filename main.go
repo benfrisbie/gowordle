@@ -20,6 +20,7 @@ func main() {
 	maxGuesses := flag.Int("max_guesses", 6, "max number of guesses to allow")
 	wordPath := flag.String("word_path", "words.txt", "path to a text file containing list of all possible words seperated by new lines")
 	solutionsPath := flag.String("solutions_path", "solutions.txt", "path to a text file containing list of all solution words seperated by new lines")
+	backgroundColor := flag.Bool("background_color", false, "use background color for hints instead of text color")
 	seed := flag.Int64("seed", time.Now().UnixNano(), "seed for the random word generator")
 	debug := flag.Bool("debug", false, "enable debug logging")
 	flag.Parse()
@@ -41,7 +42,7 @@ func main() {
 	var reader = bufio.NewReader(os.Stdin)
 
 	for {
-		game = wordle.NewWordle(words.RandomSolution(random), *maxGuesses)
+		game = wordle.NewWordle(words.RandomSolution(random), *maxGuesses, *backgroundColor)
 
 		// start game loop
 		for {
