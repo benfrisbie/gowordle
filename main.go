@@ -54,8 +54,8 @@ func main() {
 			guess = strings.ToLower(strings.TrimSuffix(guess, "\n"))
 
 			// validate guess
-			if len(guess) != len(game.Word) {
-				fmt.Printf("Incorrect length. Enter a %d letter word\n", len(game.Word))
+			if len(guess) != len(game.Solution) {
+				fmt.Printf("Incorrect length. Enter a %d letter word\n", len(game.Solution))
 				continue
 			} else if !words.Exists(guess) {
 				fmt.Printf("Not a real word\n")
@@ -68,10 +68,10 @@ func main() {
 
 			// Check for end of game
 			if game.IsWin() {
-				fmt.Printf("You won! Correctly guessed \"%s\" in %d/%d guesses!\n", game.Word, game.Guesses, game.MaxGuesses)
+				fmt.Printf("You won! Correctly guessed \"%s\" in %d/%d guesses!\n", game.Solution, game.Guesses, game.MaxGuesses)
 				break
 			} else if game.IsLose() {
-				fmt.Printf("You lost! The solution was \"%s\"\n", game.Word)
+				fmt.Printf("You lost! The solution was \"%s\"\n", game.Solution)
 				break
 			}
 		}
