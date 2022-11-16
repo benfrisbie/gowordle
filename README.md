@@ -54,7 +54,7 @@ As you can see the final solution is `along`. Let's walk through the example one
 ## Options
 | Name | Description |
 | ---- | --- |
-| `-background_color` | use background color for hints instead of text color |
+| `--background_color` | use background color for hints instead of text color |
 | `--debug` | enable debug logging |
 | `--max_guesses` | max number of guesses |
 | `--seed` | random seed to use |
